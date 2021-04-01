@@ -22,8 +22,10 @@ const FileUpload = (props) => {
     })
       .then((response) => response.json())
       .then((result) => {
-        // console.log("Success:", result.gradcam);
-        props.data(result.time, result.gradcam);
+        // console.log("Success:");
+        // var url =  "http://127.0.0.1:5000/" + result.gradcam ;
+        // console.log(result.gradcam);
+        props.data(result.time,result.gradcam,result.result);
       })
       .catch((error) => {
         console.error("Error:", error);

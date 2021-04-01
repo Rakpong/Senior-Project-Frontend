@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./App.css";
 import ReactPlayer from "react-player";
 import FileUpload from "./FileUpload";
-import GradFile from "./gradfile";
+// import GradFile from "./gradfile";
 // import { Base64 } from "js-base64";
 // import ImgToBase64 from "react-native-image-base64";
 
@@ -10,32 +10,21 @@ function App() {
   const [Time, setTime] = useState([]);
   const [Gradcam, setGradcam] = useState([]);
   const [videoFile, setvideoFile] = useState(null);
-  // const fs = require("fs");
-  // const stream = require("stream");
-  // const base64 = require("base64");
+  const [Result, setResult] = useState([]);
 
   const GetVideo = (video) => {
     setvideoFile(URL.createObjectURL(video));
   };
 
-  const GetgradFile = (file) => {
-    // var path = URL.createObjectURL(file)
-    setGradcam(file);
-    console.log(file);
-  };
-
-  const GetData = (time, gradcam) => {
+  const GetData = (time, gradcam, result) => {
     console.log("data is recieve");
-    var Tstr = time.slice(1, time.length - 1);
-    var Tarr = Tstr.split(",");
-    var GradPath = `data:image/jpg;base64,${gradcam}`;
+    // var Tstr = time.slice(1, time.length - 1);
+    // var Rstr = result.slice(1, result.length - 1);
+    var Tarr = time.toString().split(",");
+    var Rarr = result.toString().split(",");
     setTime(Tarr);
-    // setGradcam(gradcam);
-    // ImgToBase64.getBase64String({ uri: `data:image/gif;base64,${gradcam}` })
-    //   .then((base64String) => {
-    //     console.log(base64String)
-    //   })
-    // setGradcam(({ gradcam }) => <img src={`data:image/jpg;base64,${gradcam}`} />)
+    setGradcam(gradcam);
+    setResult(Rarr);
   };
   return (
     <div>
@@ -58,8 +47,8 @@ function App() {
               <div className="video">
                 <ReactPlayer
                   url={videoFile}
-                  width="100%"
-                  height="100%"
+                  width="600px"
+                  height="500px"
                   controls={true}
                 />
               </div>
@@ -70,19 +59,35 @@ function App() {
             <div class="table-wrap">
               <td>
                 {Time[0] == "None" ? (
-                  <p>NO WILDFIRESMOKE DETECTED</p>
+                  <p>NO WILDFIRESMOKE DETECTED </p>
                 ) : (
-                  Time.map((item) => (
-                    <p key={item}>WILDFIRESMOKE DETECTED AT {item} S</p>
+                  Time.map((x, item) => (
+                    <p key={(x, item)}>
+                      {" "}
+                      MODEL PREDICT {Result[item]} AT {x}  S
+                    </p>
                   ))
                 )}
               </td>
             </div>
           </tr>
           {/* <gradFile gradimage = {GetgradFile} /> */}
-          <GradFile gradimage={GetgradFile} />
-          <img src={Gradcam} width="500px" height="500px" />
+          {/* <GradFile gradimage={GetgradFile} /> */}
         </table>
+        <div
+          style={{
+            marginLeft: "100px",
+            marginTop: "50px",
+            marginBottom: "50px",
+          }}
+        >
+          <img
+            src={`data:image/png;base64,${Gradcam}`}
+            alt="img"
+            width="1000px"
+            height="500px"
+          />
+        </div>
       </div>
     </div>
   );
